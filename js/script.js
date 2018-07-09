@@ -48,7 +48,14 @@ function init() {
     "assets/img/aelghatten.jpg",
     "assets/img/vikingahatten.jpg",
     "assets/img/rastahatten.jpg",
-    "assets/img/regnhatten.jpg"
+    "assets/img/regnhatten.jpg",
+    "assets/img/vikingahatten-2.jpg",
+    "assets/img/soldathatten.jpg",
+    "assets/img/tjyvhatten.jpg",
+    "assets/img/fedoran.jpg",
+    "assets/img/krigsbaskern.jpg",
+    "assets/img/silverhatten.jpg",
+    "assets/img/bygghatten.jpg",
   )
 
   resizeCanvas();
@@ -65,7 +72,7 @@ function init() {
 function markTheSpot(newSpotX, newSpotY) {
     ctx.font = '900 30px "Font Awesome 5 Free"';
     ctx.fillStyle = "red";
-    ctx.fillText("\uf00d", newSpotX, newSpotY);
+    ctx.fillText("\uf521", newSpotX, newSpotY);
 }
 
 function getRandomInt(min, max) {
