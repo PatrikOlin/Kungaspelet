@@ -1,8 +1,12 @@
+/* TODO: Kolla upp hur man sparar scorelistan i en cookie */
+
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 
 var x;
 var y;
+var r = 100;
+var crownFound = false;
 
 var imgX;
 var imgY;
@@ -12,15 +16,42 @@ var spotY;
 
 var currentImg;
 
+var timeLeft = 30;
+var timeHandler = setInterval(timer, 1000);
+var movesMade;
+var controlsLocked = true;
 
-/* var img1 = new Image();
-img1.src = "/img/grodhatten.jpg";
-var img2 = new Image();
-img2.src = "/img/aelghatten.jpg";
-var img3 = new Image();
-img3.src = "/img/vikingahatten.jpg";
+var gameMode;
 
-var images = [img1, img2, img3]; */
+var score;
+
+function timer() {
+  var countdown = document.getElementById("countdownTimer");
+  if (timeLeft == 0) {
+    clearInterval(timeHandler);
+    countdown.innerHTML = "Slut på tid!";
+  } else {
+    countdown.innerHTML = timeLeft + ' sekunder kvar';
+    timeLeft--;
+  }
+}
+
+function addTime(seconds) {
+  if(timeLeft == 0) {
+    resetTimer(5);
+  } else {
+  timeLeft = timeLeft + seconds;
+  }
+  console.log(timeLeft);
+  document.getElementById("countdownTimer").innerHTML = timeLeft + ' sekunder kvar';
+}
+
+function resetTimer(seconds) {
+  document.getElementById("countdownTimer").innerHTML = "Timern startas om, una secunda, por favor!";
+  timeLeft = seconds;
+  clearInterval(timeHandler);
+  timeHandler = setInterval(timer, 1000);
+}
 
 var images = [];
 
@@ -31,10 +62,10 @@ function preload() {
   }
 }
 
-
 init();
 
 function init() {
+  controlsLocked = true;
   canvas = document.getElementById("canvas");
   ctx = canvas.getContext("2d");
   ctx.font = "30px FontAwesome 5 Free";
@@ -42,6 +73,13 @@ function init() {
 
   window.addEventListener("resize", resizeCanvas, false);
   window.addEventListener("orientationchange", resizeCanvas, false);
+  window.onkeydown = controller;
+  score = 0;
+  serveNewImage();
+}
+
+function serveNewImage() {
+  controlsLocked = true;
 
   preload(
     "assets/img/grodhatten.jpg",
@@ -57,23 +95,24 @@ function init() {
     "assets/img/silverhatten.jpg",
     "assets/img/bygghatten.jpg",
   )
-
+  
   resizeCanvas();
-  window.onkeydown = controller;
-  shuffleImage();
-  spotX = getRandomInt(50, currentImg.width - 50);
-  spotY = getRandomInt(50, currentImg.height - 50);
   document.fonts.ready.then(_ => {
-    setTimeout(_ => markTheSpot(spotX, spotY), 500)
-  })
-
+    setTimeout(_ => markTheSpot(spotX, spotY), 100)
+  });
+  shuffleImage();
+  movesMade = 0;
+  crownFound = false;
+  resetTimer(30);
 }
 
 function markTheSpot(newSpotX, newSpotY) {
     ctx.font = '900 30px "Font Awesome 5 Free"';
     ctx.fillStyle = "red";
     ctx.fillText("\uf521", newSpotX, newSpotY);
-}
+    controlsLocked = false;
+  }
+
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -91,22 +130,40 @@ function resizeCanvas() {
   canvas.height = window.innerHeight * 0.6;
   x = canvas.width / 2;
   y = canvas.height / 2;
-
 }
+
+// Funktion som gör den superläskiga matten för att kolla om kronan finns inom viewporten/titthålet/cirkeln,
+// dvs kollar om radien är mindre än avståndet mellan viewportens mittpunkt och kronans position.
+function checkIfCrownFound() {
+  x0 = canvas.width / 2;
+  y0 = canvas.height / 2;
+  x1 = spotX;
+  y1 = spotY;
+  if (Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0)) < r){
+    crownFound = true;
+    console.log("Kronan hittad!");
+  }
+}
+
 
 function shuffleImage() {
   currentImg = images[Math.floor(Math.random() * images.length)];
   currentImg.onload = function () {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
+    spotX = getRandomInt(50, currentImg.width - 50);
+    spotY = getRandomInt(50, currentImg.height - 50);
     ctx.save();
     ctx.drawImage(currentImg, (x - imgX), (y - imgY));
     ctx.globalCompositeOperation = "destination-in";
     ctx.beginPath();
-    ctx.arc(canvas.width / 2, canvas.height / 2, 100, 0, Math.PI * 2, false);
+    ctx.arc(canvas.width / 2, canvas.height / 2, r, 0, Math.PI * 2, false);
     ctx.closePath();
     ctx.fill();
     ctx.restore();
+    movesMade = 0;
+    document.getElementById("movesCounter").innerHTML = "Antal drag: " +movesMade;
+    checkIfCrownFound();
   }
 }
 
@@ -116,6 +173,8 @@ function shuffleImage() {
 } */
 
 function moveImage(spotX, spotY) {
+  movesMade++;
+  var movesCounter = document.getElementById("movesCounter");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
   ctx.drawImage(currentImg, (x - imgX), (y - imgY));
@@ -126,12 +185,16 @@ function moveImage(spotX, spotY) {
   ctx.closePath();
   ctx.fill();
   ctx.restore();
+  checkIfCrownFound();
+  movesCounter.innerHTML = "Antal drag: " + movesMade;
+  
 }
 
 function controller(e) {
   const key = event.key || e.target.id;
   console.log(key);
 
+  if(!controlsLocked) {
   switch (key) {
     case "ArrowUp":
     case "w":
@@ -183,5 +246,18 @@ function controller(e) {
     }
 
       break;
+
+    case " ":
+    checkIfCrownFound();
+    if(crownFound == true){
+      score++;
+      document.getElementById("movesCounter").innerHTML = "Du vann! Det tog " + movesMade + " drag"
+      document.getElementById("scoreCounter").innerHTML = "Score: " + score;
+      serveNewImage();
+    } else{
+      break;
+    }
+    break;
   }
+}
 }

@@ -14,9 +14,20 @@
 
 <body>
     <div class="container">
-        <h1>Kungaspelet</h1>
+        <h1>Kungens många hattar</h1>
+        <div class="mainContent">
         <canvas id="canvas" width="300" height="150"></canvas>
+        <li id="scoreList"><h2>High scores:</h2><ul>Test</ul></li>
+    </div>
+        <div class="info">
+        <p id="countdownTimer">Starta klockan!</p>
+        <p id="movesCounter">Antal drag: 0</p>
+        <p id="scoreCounter">Score: 0</p>
+    </div>
+        <div class="buttons">
         <button class="btn" type="submit" onClick="init()">Slumpa bild</button>
+        <button class="btn" type="button" onClick="addTime(5)">Mer tid, tack!</button>
+    </div>
     </div>
 
 
