@@ -6,7 +6,6 @@ var ctx = canvas.getContext("2d");
 var x;
 var y;
 var r = 100;
-var crownFound = false;
 
 var imgX;
 var imgY;
@@ -24,16 +23,101 @@ var controlsLocked = true;
 var gameMode;
 
 var score;
+var highscores = [];
+var gameResult = {};
+
+var images = [];
+
+init();
+
+function init() {
+  // Hämtar tidigare highscores ur localstorage och parsar JSONen till en array, 
+  // kör sedan metoden displayHighscoreList med arrayen som parameter för att skriva ut
+  // highscoresen som fanns i localStorage
+  highscores = JSON.parse(localStorage.getItem("highscores"));
+  console.log("retrieved Highscores: ", highscores);
+  displayHighscoreList(highscores);
+  controlsLocked = true;
+  document.getElementById("gameOverScreen").style.display = "none";
+  canvas = document.getElementById("canvas");
+  ctx = canvas.getContext("2d");
+  ctx.font = "30px FontAwesome 5 Free";
+  ctx.fillStyle = "red";
+
+  window.addEventListener("resize", resizeCanvas, false);
+  window.addEventListener("orientationchange", resizeCanvas, false);
+  window.onkeydown = controller;
+  score = 0;
+  serveNewImage();
+}
+
+function preload() {
+  for (var i = 0; i < arguments.length; i++) {
+    images[i] = new Image();
+    images[i].src = preload.arguments[i];
+  }
+}
 
 function timer() {
   var countdown = document.getElementById("countdownTimer");
+
   if (timeLeft == 0) {
     clearInterval(timeHandler);
     countdown.innerHTML = "Slut på tid!";
+    controlsLocked = true;
+    handleGameOver();
   } else {
     countdown.innerHTML = timeLeft + ' sekunder kvar';
     timeLeft--;
   }
+}
+
+
+function handleGameOver(){
+  var gameOverScreen = document.getElementById("gameOverScreen");
+  var gameOverScore = document.getElementById("gameOverScore");
+  document.getElementById("highscoreEntry").reset();
+  document.getElementById("submitHighScore").disabled = false;
+  gameOverScreen.style.display="block";
+  gameOverScore.innerHTML = score;
+}
+
+function addHighScore(){
+  var initials = document.getElementById("initials").value;
+  gameResult = {name: initials, pts: score};
+  highscores.push(gameResult);
+  highscores.sort(function(a,b) {
+    return (b.pts - a.pts)
+  });
+
+  // Konverterar vår highscores-array till en JSON-sträng och sparar den i localStorage
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+
+  displayHighscoreList(highscores);
+  document.getElementById("highscoreEntry").reset();
+  document.getElementById("submitHighScore").disabled = true;
+}
+
+function displayHighscoreList(arr) {
+  var scoreList = document.getElementById("scoreList");
+  var li;
+
+  //Först tar vi bort alla li-element som finns i listan
+  while(scoreList.firstChild){
+    scoreList.removeChild(scoreList.firstChild);
+  }
+
+  // sedan skriver vi ut vår array med highscores som li-element i listan
+  // för att få allting sorterat och utan dubletter.
+  arr.forEach(function(item){
+    if(Array.isArray(item)){
+      return;
+    }
+      li = document.createElement("li");
+      li.appendChild(document.createTextNode(item.name + " ––– " + item.pts + " pts"));
+      scoreList.appendChild(li);
+  });
+  
 }
 
 function addTime(seconds) {
@@ -47,39 +131,14 @@ function addTime(seconds) {
 }
 
 function resetTimer(seconds) {
-  document.getElementById("countdownTimer").innerHTML = "Timern startas om, una secunda, por favor!";
   timeLeft = seconds;
   clearInterval(timeHandler);
   timeHandler = setInterval(timer, 1000);
 }
 
-var images = [];
-
-function preload() {
-  for (var i = 0; i < arguments.length; i++) {
-    images[i] = new Image();
-    images[i].src = preload.arguments[i];
-  }
-}
-
-init();
-
-function init() {
-  controlsLocked = true;
-  canvas = document.getElementById("canvas");
-  ctx = canvas.getContext("2d");
-  ctx.font = "30px FontAwesome 5 Free";
-  ctx.fillStyle = "red";
-
-  window.addEventListener("resize", resizeCanvas, false);
-  window.addEventListener("orientationchange", resizeCanvas, false);
-  window.onkeydown = controller;
-  score = 0;
-  serveNewImage();
-}
-
 function serveNewImage() {
   controlsLocked = true;
+  resizeCanvas();
 
   preload(
     "assets/img/grodhatten.jpg",
@@ -95,14 +154,13 @@ function serveNewImage() {
     "assets/img/silverhatten.jpg",
     "assets/img/bygghatten.jpg",
   )
-  
-  resizeCanvas();
-  document.fonts.ready.then(_ => {
-    setTimeout(_ => markTheSpot(spotX, spotY), 100)
-  });
+/*   document.fonts.ready.then(_ => {
+    setTimeout(_ => markTheSpot(spotX, spotY), 500)
+  }); */
+   markTheSpot(spotX, spotY);
   shuffleImage();
+ 
   movesMade = 0;
-  crownFound = false;
   resetTimer(30);
 }
 
@@ -140,8 +198,10 @@ function checkIfCrownFound() {
   x1 = spotX;
   y1 = spotY;
   if (Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0)) < r){
-    crownFound = true;
     console.log("Kronan hittad!");
+    return true;
+  } else {
+    return false;
   }
 }
 
@@ -167,11 +227,6 @@ function shuffleImage() {
   }
 }
 
-/*   function preloadImage(url) {
-    var img=new Image();
-    img.src=url;
-} */
-
 function moveImage(spotX, spotY) {
   movesMade++;
   var movesCounter = document.getElementById("movesCounter");
@@ -187,7 +242,6 @@ function moveImage(spotX, spotY) {
   ctx.restore();
   checkIfCrownFound();
   movesCounter.innerHTML = "Antal drag: " + movesMade;
-  
 }
 
 function controller(e) {
@@ -248,8 +302,8 @@ function controller(e) {
       break;
 
     case " ":
-    checkIfCrownFound();
-    if(crownFound == true){
+    ;
+    if(checkIfCrownFound()){
       score++;
       document.getElementById("movesCounter").innerHTML = "Du vann! Det tog " + movesMade + " drag"
       document.getElementById("scoreCounter").innerHTML = "Score: " + score;

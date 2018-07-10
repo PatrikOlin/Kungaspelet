@@ -14,10 +14,23 @@
 
 <body>
     <div class="container">
+        <div id="gameOverScreen">
+            <h1>Spelet är slut!</h1>
+            <p>Du fick <span id="gameOverScore"></span> poäng!</p><br>
+            <form id="highscoreEntry">
+            <label for="initals">Namn: </label><input type="text" name="initals" id="initials" maxlength="3" required><br>
+            <button class="btn" type="submit" id="submitHighScore" onClick="addHighScore()" enabled>Skicka in!</button>
+            <button class="btn" type="button" onClick="init()">Spela igen!</button>
+        </form>
+        </div>
         <h1>Kungens många hattar</h1>
         <div class="mainContent">
         <canvas id="canvas" width="300" height="150"></canvas>
-        <li id="scoreList"><h2>High scores:</h2><ul>Test</ul></li>
+        <div class="highscore-container">
+            <h2>Dina high scores:</h2>
+        <ul id="scoreList">
+        </ul>
+    </div>
     </div>
         <div class="info">
         <p id="countdownTimer">Starta klockan!</p>

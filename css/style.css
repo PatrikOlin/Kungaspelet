@@ -27,6 +27,10 @@ body, html {
   background-color: #005293;
 }
 
+ul {
+  list-style-type: none;
+}
+
 .container {
   width: 100%;
   margin: 0 auto;
@@ -58,7 +62,7 @@ p {
   padding: 5px 0;
   padding-left: 15px;
   display: inline-block;
-  font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
+  font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
   font-size: 2em;
   -webkit-margin-before: 0;
   -webkit-margin-after: 0;
@@ -79,16 +83,92 @@ p {
   text-align: center;
   text-decoration: none;
   margin: 0 auto;
+  margin-left: 15px;
+  -webkit-transition: all .5s ease-out;
+  transition: all .5s ease-out;
 }
 
-#scoreList {
+.btn:hover {
+  -webkit-transform: scale(1.1);
+          transform: scale(1.1);
+}
+
+.highscore-container {
   color: #FECB00;
   font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
   font-size: 1em;
   position: absolute;
   top: 14em;
   right: 7em;
+  text-align: center;
+}
+
+.highscore-container h2 {
+  -webkit-margin-before: 0.83em;
+  -webkit-margin-after: 0.83em;
+}
+
+.highscore-container #scoreList {
   display: block;
-  float: right;
+  text-align: center;
+  -webkit-padding-start: 0;
+}
+
+.highscore-container #scoreList li {
+  text-transform: uppercase;
+}
+
+#gameOverScreen {
+  display: none;
+  border: 15px solid #005293;
+  position: fixed;
+  width: 50%;
+  height: 30%;
+  left: 25%;
+  top: 25%;
+  text-align: center;
+  z-index: 2;
+  background-color: #FECB00;
+}
+
+#gameOverScreen p, #gameOverScreen h1, #gameOverScreen span, #gameOverScreen label {
+  color: #005293;
+}
+
+#gameOverScreen .btn {
+  background-color: #005293;
+  color: #FECB00;
+  margin-top: 10px;
+}
+
+#gameOverScreen .btn:disabled {
+  background-color: #003660;
+  color: #cba200;
+}
+
+#gameOverScreen .btn:disabled:hover {
+  -webkit-transform: none;
+          transform: none;
+}
+
+#gameOverScreen input[type=text] {
+  font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
+  color: #005293;
+  text-transform: uppercase;
+  letter-spacing: 10px;
+  font-size: 1.5em;
+  background-color: transparent;
+  border: none;
+  border-bottom: 3px solid #A71554;
+  width: 10%;
+}
+
+#gameOverScreen label {
+  font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
+  font-size: 1.5em;
+}
+
+span.tab {
+  padding: 0 1em;
 }
 /*# sourceMappingURL=style.css.map */

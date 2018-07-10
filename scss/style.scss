@@ -42,10 +42,13 @@ body, html{
     background-color: $royalBlue;
 }
 
+ul{
+    list-style-type: none;
+}
+
 .container {
     width: 100%;
     margin: 0 auto;
-
 }
 
 canvas {
@@ -74,11 +77,12 @@ p {
     padding: 5px 0;
     padding-left: 15px;
     display: inline-block;
-    font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
+    font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
     font-size: 2em;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
 }
+
 
 .buttons, .info {
     display: block;
@@ -95,16 +99,94 @@ p {
     text-align: center;
     text-decoration: none;
     margin: 0 auto;
+    margin-left: 15px;
+    transition: all .5s ease-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
 
 }
 
-#scoreList {
+.highscore-container {
     color: $royalYellow;
     font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
     font-size: 1em;
     position: absolute;
     top: 14em;
     right: 7em;
-    display: block;
-    float: right;
+    text-align: center;
+
+    & h2 {
+        -webkit-margin-before: 0.83em;
+        -webkit-margin-after: 0.83em;
+    }
+
+    & #scoreList {
+
+        display: block;
+        text-align: center;
+        -webkit-padding-start: 0;
+    
+        & li{
+            text-transform: uppercase;
+        }
+        
+    }
+}
+
+#gameOverScreen {
+    display: none;
+    border: 15px solid $royalBlue;
+    position: fixed;
+    width: 50%;
+    height: 30%;
+    left: 25%;
+    top: 25%;
+    text-align: center;
+    z-index: 2;
+    background-color: $royalYellow;
+
+    & p, h1, span, label {
+        color: $royalBlue;
+    }
+
+    & .btn {
+        background-color: $royalBlue;
+        color: $royalYellow;
+        margin-top: 10px;
+
+        &:disabled {
+            background-color: darken($royalBlue, 10%);
+            color: darken($royalYellow, 10%);
+
+            &:hover {
+                transform: none;
+            }
+        }
+
+        
+    }
+
+    & input[type=text] {
+        font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
+        color: $royalBlue;
+        text-transform: uppercase;
+        letter-spacing: 10px;
+        font-size: 1.5em;
+        background-color: transparent;
+        border: none;
+        border-bottom: 3px solid $pink;
+        width: 10%;
+    }
+
+    & label {
+        font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
+        font-size: 1.5em;
+    }
+
+}
+
+span.tab {
+    padding: 0 1em;
 }
