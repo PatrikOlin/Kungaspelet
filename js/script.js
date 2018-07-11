@@ -23,7 +23,7 @@ var controlsLocked = true;
 var gameMode;
 
 var score;
-var highscores = [];
+var highscores;
 var gameResult = {};
 
 var images = [];
@@ -31,10 +31,7 @@ var images = [];
 init();
 
 function init() {
-  // Hämtar tidigare highscores ur localstorage och parsar JSONen till en array, 
-  // kör sedan metoden displayHighscoreList med arrayen som parameter för att skriva ut
-  // highscoresen som fanns i localStorage
-  highscores = JSON.parse(localStorage.getItem("highscores"));
+  fetchHighscoreFromLocalStorage();
   console.log("retrieved Highscores: ", highscores);
   displayHighscoreList(highscores);
   controlsLocked = true;
@@ -58,6 +55,17 @@ function preload() {
   }
 }
 
+// Hämtar tidigare highscores ur localstorage och parsar JSONen till en array,
+// kör sedan metoden displayHighscoreList med arrayen som parameter för att skriva ut
+// highscoresen som fanns i localStorage
+function fetchHighscoreFromLocalStorage() {
+  if (localStorage.getItem("highscores")) {
+    highscores = JSON.parse(localStorage.getItem("highscores"));
+  } else {
+    highscores = [];
+  }
+}
+
 function timer() {
   var countdown = document.getElementById("countdownTimer");
 
@@ -67,27 +75,26 @@ function timer() {
     controlsLocked = true;
     handleGameOver();
   } else {
-    countdown.innerHTML = timeLeft + ' sekunder kvar';
+    countdown.innerHTML = timeLeft + " sekunder kvar";
     timeLeft--;
   }
 }
 
-
-function handleGameOver(){
+function handleGameOver() {
   var gameOverScreen = document.getElementById("gameOverScreen");
   var gameOverScore = document.getElementById("gameOverScore");
   document.getElementById("highscoreEntry").reset();
   document.getElementById("submitHighScore").disabled = false;
-  gameOverScreen.style.display="block";
+  gameOverScreen.style.display = "block";
   gameOverScore.innerHTML = score;
 }
 
-function addHighScore(){
+function addHighScore() {
   var initials = document.getElementById("initials").value;
-  gameResult = {name: initials, pts: score};
+  gameResult = { name: initials, pts: score };
   highscores.push(gameResult);
-  highscores.sort(function(a,b) {
-    return (b.pts - a.pts)
+  highscores.sort(function(a, b) {
+    return b.pts - a.pts;
   });
 
   // Konverterar vår highscores-array till en JSON-sträng och sparar den i localStorage
@@ -103,31 +110,33 @@ function displayHighscoreList(arr) {
   var li;
 
   //Först tar vi bort alla li-element som finns i listan
-  while(scoreList.firstChild){
+  while (scoreList.firstChild) {
     scoreList.removeChild(scoreList.firstChild);
   }
 
   // sedan skriver vi ut vår array med highscores som li-element i listan
   // för att få allting sorterat och utan dubletter.
-  arr.forEach(function(item){
-    if(Array.isArray(item)){
+  arr.forEach(function(item) {
+    if (Array.isArray(item)) {
       return;
     }
-      li = document.createElement("li");
-      li.appendChild(document.createTextNode(item.name + " ––– " + item.pts + " pts"));
-      scoreList.appendChild(li);
+    li = document.createElement("li");
+    li.appendChild(
+      document.createTextNode(item.name + " ––– " + item.pts + " pts")
+    );
+    scoreList.appendChild(li);
   });
-  
 }
 
 function addTime(seconds) {
-  if(timeLeft == 0) {
+  if (timeLeft == 0) {
     resetTimer(5);
   } else {
-  timeLeft = timeLeft + seconds;
+    timeLeft = timeLeft + seconds;
   }
   console.log(timeLeft);
-  document.getElementById("countdownTimer").innerHTML = timeLeft + ' sekunder kvar';
+  document.getElementById("countdownTimer").innerHTML =
+    timeLeft + " sekunder kvar";
 }
 
 function resetTimer(seconds) {
@@ -152,25 +161,24 @@ function serveNewImage() {
     "assets/img/fedoran.jpg",
     "assets/img/krigsbaskern.jpg",
     "assets/img/silverhatten.jpg",
-    "assets/img/bygghatten.jpg",
-  )
-/*   document.fonts.ready.then(_ => {
+    "assets/img/bygghatten.jpg"
+  );
+  /*   document.fonts.ready.then(_ => {
     setTimeout(_ => markTheSpot(spotX, spotY), 500)
   }); */
-   markTheSpot(spotX, spotY);
+  markTheSpot(spotX, spotY);
   shuffleImage();
- 
+
   movesMade = 0;
   resetTimer(30);
 }
 
 function markTheSpot(newSpotX, newSpotY) {
-    ctx.font = '900 30px "Font Awesome 5 Free"';
-    ctx.fillStyle = "red";
-    ctx.fillText("\uf521", newSpotX, newSpotY);
-    controlsLocked = false;
-  }
-
+  ctx.font = '900 30px "Font Awesome 5 Free"';
+  ctx.fillStyle = "red";
+  ctx.fillText("\uf521", newSpotX, newSpotY);
+  controlsLocked = false;
+}
 
 function getRandomInt(min, max) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -197,7 +205,7 @@ function checkIfCrownFound() {
   y0 = canvas.height / 2;
   x1 = spotX;
   y1 = spotY;
-  if (Math.sqrt((x1-x0)*(x1-x0) + (y1-y0)*(y1-y0)) < r){
+  if (Math.sqrt((x1 - x0) * (x1 - x0) + (y1 - y0) * (y1 - y0)) < r) {
     console.log("Kronan hittad!");
     return true;
   } else {
@@ -205,16 +213,15 @@ function checkIfCrownFound() {
   }
 }
 
-
 function shuffleImage() {
   currentImg = images[Math.floor(Math.random() * images.length)];
-  currentImg.onload = function () {
+  currentImg.onload = function() {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
     spotX = getRandomInt(50, currentImg.width - 50);
     spotY = getRandomInt(50, currentImg.height - 50);
     ctx.save();
-    ctx.drawImage(currentImg, (x - imgX), (y - imgY));
+    ctx.drawImage(currentImg, x - imgX, y - imgY);
     ctx.globalCompositeOperation = "destination-in";
     ctx.beginPath();
     ctx.arc(canvas.width / 2, canvas.height / 2, r, 0, Math.PI * 2, false);
@@ -222,9 +229,10 @@ function shuffleImage() {
     ctx.fill();
     ctx.restore();
     movesMade = 0;
-    document.getElementById("movesCounter").innerHTML = "Antal drag: " +movesMade;
+    document.getElementById("movesCounter").innerHTML =
+      "Antal drag: " + movesMade;
     checkIfCrownFound();
-  }
+  };
 }
 
 function moveImage(spotX, spotY) {
@@ -232,7 +240,7 @@ function moveImage(spotX, spotY) {
   var movesCounter = document.getElementById("movesCounter");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
-  ctx.drawImage(currentImg, (x - imgX), (y - imgY));
+  ctx.drawImage(currentImg, x - imgX, y - imgY);
   markTheSpot(spotX, spotY);
   ctx.globalCompositeOperation = "destination-in";
   ctx.beginPath();
@@ -248,70 +256,66 @@ function controller(e) {
   const key = event.key || e.target.id;
   console.log(key);
 
-  if(!controlsLocked) {
-  switch (key) {
-    case "ArrowUp":
-    case "w":
-      
-      if(y >= currentImg.height - 95) {
+  if (!controlsLocked) {
+    switch (key) {
+      case "ArrowUp":
+      case "w":
+        if (y >= currentImg.height - 95) {
+          break;
+        } else {
+          y = y + 5;
+          spotY = spotY + 5;
+          moveImage(spotX, spotY);
+        }
+
         break;
-      } else {
-        y = y + 5;
-        spotY = spotY + 5;
-        moveImage(spotX, spotY);
-      }
- 
-      break;
 
-    case "ArrowDown":
-    case "s":
-      
-    if(y <= 105){
-      y=y;
-    } else {
-      y = y - 5;
-      spotY = spotY - 5;
-      moveImage(spotX, spotY);
+      case "ArrowDown":
+      case "s":
+        if (y <= 105) {
+          y = y;
+        } else {
+          y = y - 5;
+          spotY = spotY - 5;
+          moveImage(spotX, spotY);
+        }
+        break;
+
+      case "ArrowLeft":
+      case "a":
+        if (x >= currentImg.width - 35) {
+          break;
+        } else {
+          x = x + 5;
+          spotX = spotX + 5;
+          moveImage(spotX, spotY);
+        }
+
+        break;
+
+      case "ArrowRight":
+      case "d":
+        if (x <= 165) {
+          break;
+        } else {
+          x = x - 5;
+          spotX = spotX - 5;
+          moveImage(spotX, spotY);
+        }
+
+        break;
+
+      case " ":
+        if (checkIfCrownFound()) {
+          score++;
+          document.getElementById("movesCounter").innerHTML =
+            "Du vann! Det tog " + movesMade + " drag";
+          document.getElementById("scoreCounter").innerHTML = "Score: " + score;
+          serveNewImage();
+        } else {
+          break;
+        }
+        break;
     }
-      break;
-
-    case "ArrowLeft":
-    case "a":
-      
-    if(x >= currentImg.width - 35) {
-      break;
-    } else {
-      x = x + 5;
-      spotX = spotX + 5;
-      moveImage(spotX, spotY);
-    }
-     
-      break;
-
-    case "ArrowRight":
-    case "d":
-      
-    if(x <= 165) {
-      break;
-    } else {
-      x = x - 5;
-      spotX = spotX - 5;
-      moveImage(spotX, spotY);
-    }
-
-      break;
-
-    case " ":
-    ;
-    if(checkIfCrownFound()){
-      score++;
-      document.getElementById("movesCounter").innerHTML = "Du vann! Det tog " + movesMade + " drag"
-      document.getElementById("scoreCounter").innerHTML = "Score: " + score;
-      serveNewImage();
-    } else{
-      break;
-    }
-    break;
   }
-}
 }
