@@ -1,4 +1,4 @@
-/* TODO: Kolla upp hur man sparar scorelistan i en cookie */
+/* TODO: Spara scorelistan i en cookie */
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
@@ -40,13 +40,11 @@ function init() {
   displayHighscoreList(highscores);
   controlsLocked = true;
   document.getElementById("gameOverScreen").style.display = "none";
-  ctx.font = "30px FontAwesome 5 Free";
-  ctx.fillStyle = "red";
-
   window.addEventListener("resize", resizeCanvas, false);
   window.addEventListener("orientationchange", resizeCanvas, false);
   window.onkeydown = controller;
   score = 0;
+  document.getElementById("scoreCounter").innerHTML = "Poäng: " + score;
   serveNewImage();
 }
 
@@ -59,6 +57,10 @@ function toggleGameMode() {
 
   init();
 }
+
+/* function checkHighScoreGameMode(gameMode){
+  return gameMode ==
+} */
 
 function preload() {
   for (var i = 0; i < arguments.length; i++) {
@@ -97,13 +99,14 @@ function handleGameOver() {
   var gameOverScore = document.getElementById("gameOverScore");
   document.getElementById("highscoreEntry").reset();
   document.getElementById("submitHighScore").disabled = false;
+  document.getElementById("initials").disabled = false;
   gameOverScreen.style.display = "block";
   gameOverScore.innerHTML = score;
 }
 
-function addHighScore() {
+function addToHighScore() {
   var initials = document.getElementById("initials").value;
-  gameResult = { name: initials, pts: score };
+  gameResult = { gameMode: gameMode, name: initials, pts: score };
   highscores.push(gameResult);
   highscores.sort(function(a, b) {
     return b.pts - a.pts;
@@ -115,6 +118,7 @@ function addHighScore() {
   displayHighscoreList(highscores);
   document.getElementById("highscoreEntry").reset();
   document.getElementById("submitHighScore").disabled = true;
+  document.getElementById("initials").disabled = true;
 }
 
 function displayHighscoreList(arr) {
@@ -189,15 +193,15 @@ function serveNewImage() {
     if(timeLimit <= 5) {
       handleGameOver();
     } else {
-      timeLimit = timeLimit-5;
       resetTimer(timeLimit);
+      timeLimit = timeLimit-5;
     }
   }
 }
 
 function markTheSpot(newSpotX, newSpotY) {
   ctx.font = '900 30px "Font Awesome 5 Free"';
-  ctx.fillStyle = "red";
+  ctx.fillStyle = "#A71554";
   ctx.fillText("\uf521", newSpotX, newSpotY);
 }
 
@@ -235,11 +239,12 @@ function checkIfCrownFound() {
 }
 
 function shuffleImage() {
-  currentImg = images[Math.floor(Math.random() * images.length)];
-  currentImg.onload = function() {
+  // Ändra funktionen så att inte samma bild kan användas två gånger i rad. Vettfan hur, förmodligen kan du jämföra currentImg.src med prevImg.src kanske?
+    currentImg = images[Math.floor(Math.random() * images.length)];
+    currentImg.onload = function() {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
-    spotX = getRandomInt(50, currentImg.width - 50);
+    spotX = getRandomInt(75, currentImg.width - 75);
     spotY = getRandomInt(50, currentImg.height - 50);
     ctx.save();
     ctx.drawImage(currentImg, x - imgX, y - imgY);
@@ -331,7 +336,7 @@ function controller(e) {
         if (checkIfCrownFound()) {
           score++;
           document.getElementById("movesCounter").innerHTML =
-            "Du vann! Det tog " + movesMade + " drag";
+            "Du hittade den! Det tog " + movesMade + " drag";
           document.getElementById("scoreCounter").innerHTML = "Score: " + score;
           serveNewImage();
         } else {

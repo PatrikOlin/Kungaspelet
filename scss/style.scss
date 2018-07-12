@@ -3,11 +3,7 @@
 @font-face {
     font-family: 'sweden_sansregular';
     src: url('/assets/fonts/swedensans-webfont.eot');
-    src: url('/assets/fonts/swedensans-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/assets/fonts/swedensans-webfont.woff2') format('woff2'),
-         url('/assets/fonts/swedensans-webfont.woff') format('woff'),
-         url('/assets/fonts/swedensans-webfont.ttf') format('truetype'),
-         url('/assets/fonts/swedensans-webfont.svg#sweden_sansregular') format('svg');
+    src: url('/assets/fonts/swedensans-webfont.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/swedensans-webfont.woff2') format('woff2'), url('/assets/fonts/swedensans-webfont.woff') format('woff'), url('/assets/fonts/swedensans-webfont.ttf') format('truetype'), url('/assets/fonts/swedensans-webfont.svg#sweden_sansregular') format('svg');
     font-weight: normal;
     font-style: normal;
 }
@@ -15,23 +11,19 @@
 @font-face {
     font-family: 'sweden_sansbold';
     src: url('/assets/fonts/swedensans-webfont.eot');
-    src: url('/assets/fonts/swedensansbold-webfont.eot?#iefix') format('embedded-opentype'),
-         url('/assets/fonts/swedensansbold-webfont.woff2') format('woff2'),
-         url('/assets/fonts/swedensansbold-webfont.woff') format('woff'),
-         url('/assets/fonts/swedensansbold-webfont.ttf') format('truetype'),
-         url('/assets/fonts/swedensansbold-webfont.svg#sweden_sansbold') format('svg');
+    src: url('/assets/fonts/swedensansbold-webfont.eot?#iefix') format('embedded-opentype'), url('/assets/fonts/swedensansbold-webfont.woff2') format('woff2'), url('/assets/fonts/swedensansbold-webfont.woff') format('woff'), url('/assets/fonts/swedensansbold-webfont.ttf') format('truetype'), url('/assets/fonts/swedensansbold-webfont.svg#sweden_sansbold') format('svg');
     font-weight: normal;
     font-style: normal;
 
 }
 
 /* COLORS */
+
 $royalBlue: #005293;
 $royalYellow: #FECB00;
 $pink: #A71554;
-
-
-body, html{
+body,
+html {
     margin: 0;
     padding: 0;
     border: 0;
@@ -42,7 +34,7 @@ body, html{
     background-color: $royalBlue;
 }
 
-ul{
+ul {
     list-style-type: none;
 }
 
@@ -60,10 +52,13 @@ canvas {
     width: 60%;
 }
 
-h1, h2, h3, h4, h5 {
+h1,
+h2,
+h3,
+h4,
+h5 {
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
-
 }
 
 h1 {
@@ -93,8 +88,8 @@ p {
     -webkit-margin-after: 0;
 }
 
-
-.buttons, .info {
+.buttons,
+.info {
     display: block;
     margin: 0 auto;
     text-align: center;
@@ -128,15 +123,16 @@ p {
     text-align: center;
 
     & #scoreList {
-
+        
         display: block;
         text-align: center;
         -webkit-padding-start: 0;
-    
-        & li{
+        list-style: decimal-leading-zero inside;
+
+        & li {
             text-transform: uppercase;
         }
-        
+
     }
 }
 
@@ -151,8 +147,10 @@ p {
     text-align: center;
     z-index: 2;
     background-color: $royalYellow;
-
-    & p, h1, span, label {
+    & p,
+    h1,
+    span,
+    label {
         color: $royalBlue;
     }
 
@@ -170,7 +168,7 @@ p {
             }
         }
 
-        
+
     }
 
     & input[type=text] {
@@ -206,19 +204,17 @@ span.tab {
     left: 3em;
     text-align: center;
     line-height: 1.6em;
+    & kbd {
+        border: 1px solid gray;
+        font-size: 1em;
+        box-shadow: 1px 0 1px 0 #eee, 0 2px 0 2px #ccc, 0 2px 0 3px #444;
+        -webkit-border-radius: 3px;
+        -moz-border-radius: 3px;
+        border-radius: 3px;
+        margin: 2px 3px;
+        padding: 1px 5px;
+    }
 
-    & kbd{
-        border:1px solid gray;
-        font-size:1em;
-        box-shadow:1px 0 1px 0 #eee, 0 2px 0 2px #ccc, 0 2px 0 3px #444;
-        -webkit-border-radius:3px;
-        -moz-border-radius:3px;
-        border-radius:3px;
-        margin:2px 3px;
-        padding:1px 5px;
-        
-        }
-    
     & p {
         font-size: 1em;
     }
