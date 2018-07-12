@@ -15,7 +15,8 @@ var spotY;
 
 var currentImg;
 
-var timeLeft = 30;
+var timeLimit = 30;
+var timeLeft;
 var timeHandler = setInterval(timer, 1000);
 var movesMade;
 var controlsLocked = true;
@@ -28,16 +29,17 @@ var gameResult = {};
 
 var images = [];
 
+var gameMode = 0;
+
 init();
 
 function init() {
+  console.log("gamemode: " + gameMode);
   fetchHighscoreFromLocalStorage();
   console.log("retrieved Highscores: ", highscores);
   displayHighscoreList(highscores);
   controlsLocked = true;
   document.getElementById("gameOverScreen").style.display = "none";
-  canvas = document.getElementById("canvas");
-  ctx = canvas.getContext("2d");
   ctx.font = "30px FontAwesome 5 Free";
   ctx.fillStyle = "red";
 
@@ -46,6 +48,16 @@ function init() {
   window.onkeydown = controller;
   score = 0;
   serveNewImage();
+}
+
+function toggleGameMode() {
+  if(gameMode == 0) {
+    gameMode = 1;
+  } else if(gameMode == 1) {
+    gameMode = 0;
+  }
+
+  init();
 }
 
 function preload() {
@@ -72,7 +84,6 @@ function timer() {
   if (timeLeft == 0) {
     clearInterval(timeHandler);
     countdown.innerHTML = "Slut på tid!";
-    controlsLocked = true;
     handleGameOver();
   } else {
     countdown.innerHTML = timeLeft + " sekunder kvar";
@@ -81,6 +92,7 @@ function timer() {
 }
 
 function handleGameOver() {
+  controlsLocked = true;
   var gameOverScreen = document.getElementById("gameOverScreen");
   var gameOverScore = document.getElementById("gameOverScore");
   document.getElementById("highscoreEntry").reset();
@@ -128,16 +140,16 @@ function displayHighscoreList(arr) {
   });
 }
 
-function addTime(seconds) {
-  if (timeLeft == 0) {
+/* function addTime(seconds) {
+  if (timeLimit == 0) {
     resetTimer(5);
   } else {
-    timeLeft = timeLeft + seconds;
+    timeLimit = timeLimit + seconds;
   }
-  console.log(timeLeft);
+  console.log(timeLimit);
   document.getElementById("countdownTimer").innerHTML =
-    timeLeft + " sekunder kvar";
-}
+    timeLimit + " sekunder kvar";
+} */
 
 function resetTimer(seconds) {
   timeLeft = seconds;
@@ -170,14 +182,23 @@ function serveNewImage() {
   shuffleImage();
 
   movesMade = 0;
-  resetTimer(30);
+  if(gameMode == 0){
+    timeLimit = 30;
+    resetTimer(timeLimit);
+  } else if(gameMode == 1){
+    if(timeLimit <= 5) {
+      handleGameOver();
+    } else {
+      timeLimit = timeLimit-5;
+      resetTimer(timeLimit);
+    }
+  }
 }
 
 function markTheSpot(newSpotX, newSpotY) {
   ctx.font = '900 30px "Font Awesome 5 Free"';
   ctx.fillStyle = "red";
   ctx.fillText("\uf521", newSpotX, newSpotY);
-  controlsLocked = false;
 }
 
 function getRandomInt(min, max) {
@@ -232,6 +253,7 @@ function shuffleImage() {
     document.getElementById("movesCounter").innerHTML =
       "Antal drag: " + movesMade;
     checkIfCrownFound();
+    controlsLocked = false;
   };
 }
 

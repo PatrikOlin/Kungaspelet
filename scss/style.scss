@@ -35,7 +35,7 @@ body, html{
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 16px;
+    font-size: 18px;
     font: inherit;
     vertical-align: baseline;
     width: 100%;
@@ -60,6 +60,12 @@ canvas {
     width: 60%;
 }
 
+h1, h2, h3, h4, h5 {
+    -webkit-margin-before: 0;
+    -webkit-margin-after: 0;
+
+}
+
 h1 {
     font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
     color: $royalYellow;
@@ -69,6 +75,10 @@ h1 {
     font-size: 4em;
     text-transform: uppercase;
     letter-spacing: 3px;
+}
+
+h2 {
+    font-size: 1.7em;
 }
 
 p {
@@ -116,11 +126,6 @@ p {
     top: 14em;
     right: 7em;
     text-align: center;
-
-    & h2 {
-        -webkit-margin-before: 0.83em;
-        -webkit-margin-after: 0.83em;
-    }
 
     & #scoreList {
 
@@ -190,3 +195,32 @@ p {
 span.tab {
     padding: 0 1em;
 }
+
+.controls-container {
+    color: $royalYellow;
+    font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
+    font-size: 1em;
+    position: absolute;
+    width: 15em;
+    top: 14em;
+    left: 3em;
+    text-align: center;
+    line-height: 1.6em;
+
+    & kbd{
+        border:1px solid gray;
+        font-size:1em;
+        box-shadow:1px 0 1px 0 #eee, 0 2px 0 2px #ccc, 0 2px 0 3px #444;
+        -webkit-border-radius:3px;
+        -moz-border-radius:3px;
+        border-radius:3px;
+        margin:2px 3px;
+        padding:1px 5px;
+        
+        }
+    
+    & p {
+        font-size: 1em;
+    }
+}
+
