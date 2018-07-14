@@ -14,6 +14,7 @@ var spotX;
 var spotY;
 
 var currentImg;
+var prevImg = 0;
 
 var timeLimit = 30;
 var timeLeft;
@@ -37,7 +38,7 @@ function init() {
   console.log("gamemode: " + gameMode);
   fetchHighscoreFromLocalStorage();
   console.log("retrieved Highscores: ", highscores);
-  displayHighscoreList(highscores);
+  displayHighscoreList(highscores, gameMode);
   controlsLocked = true;
   document.getElementById("gameOverScreen").style.display = "none";
   window.addEventListener("resize", resizeCanvas, false);
@@ -49,18 +50,14 @@ function init() {
 }
 
 function toggleGameMode() {
-  if(gameMode == 0) {
+  if (gameMode == 0) {
     gameMode = 1;
-  } else if(gameMode == 1) {
+  } else if (gameMode == 1) {
     gameMode = 0;
   }
 
   init();
 }
-
-/* function checkHighScoreGameMode(gameMode){
-  return gameMode ==
-} */
 
 function preload() {
   for (var i = 0; i < arguments.length; i++) {
@@ -106,24 +103,36 @@ function handleGameOver() {
 
 function addToHighScore() {
   var initials = document.getElementById("initials").value;
-  gameResult = { gameMode: gameMode, name: initials, pts: score };
+  gameResult = {
+    gameMode: gameMode,
+    name: initials,
+    pts: score
+  };
   highscores.push(gameResult);
-  highscores.sort(function(a, b) {
+  highscores.sort(function (a, b) {
     return b.pts - a.pts;
   });
-
+  if (highscores.length > 20) {
+    highscores.length = 20;
+  }
   // Konverterar vår highscores-array till en JSON-sträng och sparar den i localStorage
   localStorage.setItem("highscores", JSON.stringify(highscores));
 
-  displayHighscoreList(highscores);
+  displayHighscoreList(highscores, gameMode);
   document.getElementById("highscoreEntry").reset();
   document.getElementById("submitHighScore").disabled = true;
   document.getElementById("initials").disabled = true;
 }
 
-function displayHighscoreList(arr) {
+function displayHighscoreList(arr, gameMode) {
   var scoreList = document.getElementById("scoreList");
   var li;
+
+  // Filtrerar vår highscore-lista så att bara dom scores som gäller det aktuella game modet visas.
+  // (När man spelar puzzle mode så ska inte high scores för chase mode visas, och vice versa)
+  var HighScoresToDisplay = arr.filter(val => {
+    return val.gameMode == gameMode;
+  });
 
   //Först tar vi bort alla li-element som finns i listan
   while (scoreList.firstChild) {
@@ -132,7 +141,7 @@ function displayHighscoreList(arr) {
 
   // sedan skriver vi ut vår array med highscores som li-element i listan
   // för att få allting sorterat och utan dubletter.
-  arr.forEach(function(item) {
+  HighScoresToDisplay.forEach(function (item) {
     if (Array.isArray(item)) {
       return;
     }
@@ -186,15 +195,15 @@ function serveNewImage() {
   shuffleImage();
 
   movesMade = 0;
-  if(gameMode == 0){
+  if (gameMode == 0) {
     timeLimit = 30;
     resetTimer(timeLimit);
-  } else if(gameMode == 1){
-    if(timeLimit <= 5) {
+  } else if (gameMode == 1) {
+    if (timeLimit <= 5) {
       handleGameOver();
     } else {
       resetTimer(timeLimit);
-      timeLimit = timeLimit-5;
+      timeLimit = timeLimit - 5;
     }
   }
 }
@@ -239,9 +248,11 @@ function checkIfCrownFound() {
 }
 
 function shuffleImage() {
-  // Ändra funktionen så att inte samma bild kan användas två gånger i rad. Vettfan hur, förmodligen kan du jämföra currentImg.src med prevImg.src kanske?
+  do {
     currentImg = images[Math.floor(Math.random() * images.length)];
-    currentImg.onload = function() {
+  } while (prevImg.src == currentImg.src);
+  prevImg = currentImg;
+  currentImg.onload = function () {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
     spotX = getRandomInt(75, currentImg.width - 75);
