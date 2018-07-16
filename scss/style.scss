@@ -22,6 +22,11 @@
 $royalBlue: #005293;
 $royalYellow: #FECB00;
 $pink: #A71554;
+
+* {
+    box-sizing: border-box;
+  }
+
 body,
 html {
     margin: 0;
@@ -65,11 +70,11 @@ h1 {
     font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
     color: $royalYellow;
     margin: 0 auto;
-    padding: 30px 0;
     text-align: center;
     font-size: 4em;
     text-transform: uppercase;
     letter-spacing: 3px;
+    padding-top: 50px;
 }
 
 h2 {
@@ -86,6 +91,45 @@ p {
     font-size: 2em;
     -webkit-margin-before: 0;
     -webkit-margin-after: 0;
+}
+
+.main-nav {
+    background: $royalYellow;
+   
+    & ul {
+      margin: 0;
+      padding: 0;
+      min-height: 2em;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      list-style: none;
+    }
+
+    & li {
+        padding: 0 1em;
+    }
+
+    & a {
+        font-family: "sweden_sansbold", Arial, Helvetica, sans-serif;
+      padding: .5rem .5rem;
+      font-size: 1.6rem;
+      font-weight: bold;
+      text-decoration: none;
+      display: flex;
+      align-items: flex-start;
+      color: $royalBlue;
+      text-transform: uppercase;
+    }
+
+    .active {
+       /*  background-color: darken($royalYellow, 5%); */
+       background-color: $royalBlue;
+    
+       & a {
+        color: $royalYellow;
+       }
+    }
 }
 
 .buttons,
@@ -136,44 +180,64 @@ p {
     }
 }
 
+#screenFade {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 2;
+    background-color: rgba($royalBlue, .8);
+    display: block;
+    transition: all .2s ease-out;
+}
+
 #gameOverScreen {
     display: none;
-    border: 15px solid $royalBlue;
-    position: fixed;
-    width: 50%;
-    height: 30%;
-    left: 25%;
-    top: 25%;
+    position: absolute;
+    width: 60em;
+    height: 20em;
+    top: 50%;
+    left: 50%;
+    margin: -10em 0 0 -30em;
+    z-index: 3;
     text-align: center;
-    z-index: 2;
-    background-color: $royalYellow;
+    background-color: $royalBlue;
+    color: $royalYellow;
+    border: 15px solid $royalYellow;
+    transition: all .2s ease-out;
+
     & p,
     h1,
     span,
     label {
-        color: $royalBlue;
+        color: $royalYellow;
+    }
+
+    & h1 {
+        padding: 30px 0;
     }
 
     & .btn {
-        background-color: $royalBlue;
-        color: $royalYellow;
+        background-color: $royalYellow;
+        color: $royalBlue;
         margin-top: 10px;
 
         &:disabled {
-            background-color: darken($royalBlue, 10%);
-            color: darken($royalYellow, 10%);
+            background-color: darken($royalYellow, 10%);
+            color: darken($royalBlue, 10%);
 
             &:hover {
                 transform: none;
             }
         }
-
-
     }
 
     & input[type=text] {
         font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
-        color: $royalBlue;
+        color: $royalYellow;
         text-transform: uppercase;
         letter-spacing: 10px;
         font-size: 1.5em;
@@ -187,6 +251,82 @@ p {
         font-family: 'sweden_sansregular', Arial, Helvetica, sans-serif;
         font-size: 1.5em;
     }
+}
+
+    #startScreen {
+        display: block;
+        position: absolute;
+        width: 60em;
+        height: 40em;
+        top: 20%;
+        left: 50%;
+        margin: -5em 0 0 -30em;
+        z-index: 3;
+        text-align: center;
+        background-color: $royalBlue;
+        color: $royalYellow;
+        border: 15px solid $royalYellow;
+        transition: all .2s ease-out;
+    
+        & p,
+        h1,
+        span,
+        label {
+            color: $royalYellow;
+        }
+    
+        & h1 {
+            padding: 30px 0;
+        }
+    
+        & .btn {
+            background-color: $royalYellow;
+            color: $royalBlue;
+            margin-top: 10px;
+    
+            &:disabled {
+                background-color: darken($royalYellow, 10%);
+                color: darken($royalBlue, 10%);
+    
+                &:hover {
+                    transform: none;
+                }
+            }
+    
+        }
+
+        & i {
+            position: absolute;
+            top: .5em;
+            right: .5em;
+            font-size: 2em;
+            cursor: pointer;
+            transition: all .2s ease-out;
+
+            &:hover {
+                transform: scale(1.02);
+                transform-origin: center;
+                color: darken($royalYellow, 5%);
+            }
+        }
+
+        & .start-menu-list {
+            list-style: none;
+
+            & li {
+                font-family: 'sweden_sansbold', Arial, Helvetica, sans-serif;
+                color: $royalYellow;
+                text-transform: uppercase;
+                font-size: 2em;
+                padding: 1em .5em;
+                transition: all .1s ease-out;
+                cursor: pointer;
+
+                &:hover {
+                    transform: scale(1.02);
+                }
+            }
+        }
 
 }
 

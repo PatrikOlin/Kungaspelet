@@ -13,7 +13,15 @@
 </head>
 
 <body>
+    <nav role="navigation" class="main-nav" id="main-nav">
+        <ul class ="main-nav-list">
+            <li class="menu-link active"><a href="#" onClick="openStartMenu()">startmeny</a></li>
+            <li class="menu-link"><a href="#" onclick="toggleGameMode(0)">pusselläge</a></li>
+            <li class="menu-link"><a href="#" onclick="toggleGameMode(1)">jaktläge</a></li>
+        </ul>
+    </nav>
     <div class="container">
+        <div id="screenFade"></div>
         <div id="gameOverScreen">
             <h1>Spelet är slut!</h1>
             <p>Du fick <span id="gameOverScore"></span> poäng!</p><br>
@@ -22,6 +30,17 @@
             <button class="btn" type="submit" id="submitHighScore" onClick="addToHighScore()" enabled>Skicka in!</button>
             <button class="btn" type="button" onClick="init()">Spela igen!</button>
         </form>
+        </div>
+        <div id="startScreen">
+            <i class="fas fa-window-close" onClick="closeStartMenu()"></i>
+            <h1>Kära Örebroare..</h1>
+            <ul class="start-menu-list" id="startMenuList">
+                <li onClick="init(0)">Spela pusselläge</li>
+                <li onClick="init(1)">Spela jaktläge</li>
+                <li>Hur spelar man?</li>
+                <li onClick="clearHighscores()" disabled>Rensa highscores</button></li>
+            </ul>
+
         </div>
         <h1>Kungens många hattar</h1>
         <div class="mainContent">

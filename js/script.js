@@ -2,6 +2,10 @@
 
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
+var screenFade = document.getElementById("screenFade");
+var menu = document.getElementById("main-nav");
+var menuLinks = menu.getElementsByClassName("menu-link");
+var startScreen = document.getElementById("startScreen");
 
 var x;
 var y;
@@ -18,7 +22,7 @@ var prevImg = 0;
 
 var timeLimit = 30;
 var timeLeft;
-var timeHandler = setInterval(timer, 1000);
+var timeHandler;
 var movesMade;
 var controlsLocked = true;
 
@@ -32,14 +36,16 @@ var images = [];
 
 var gameMode = 0;
 
-init();
-
-function init() {
+function init(gamemode) {
+  startScreen.style.display = "none";
+  screenFade.style.display ="none";
+  controlsLocked = true;
+  timeHandler = setInterval(timer, 1000);
+  gameMode = gamemode;
   console.log("gamemode: " + gameMode);
   fetchHighscoreFromLocalStorage();
   console.log("retrieved Highscores: ", highscores);
   displayHighscoreList(highscores, gameMode);
-  controlsLocked = true;
   document.getElementById("gameOverScreen").style.display = "none";
   window.addEventListener("resize", resizeCanvas, false);
   window.addEventListener("orientationchange", resizeCanvas, false);
@@ -47,15 +53,29 @@ function init() {
   score = 0;
   document.getElementById("scoreCounter").innerHTML = "Poäng: " + score;
   serveNewImage();
+  screenFade.style.display = "none";
 }
 
-function toggleGameMode() {
-  if (gameMode == 0) {
-    gameMode = 1;
-  } else if (gameMode == 1) {
-    gameMode = 0;
-  }
+for(var i = 0; i < menuLinks.length; i++) {
+  menuLinks[i].addEventListener("click", function() {
+    var current = document.getElementsByClassName("active");
+    current[0].className = current[0].className.replace(" active", "");
+    this.className += " active";
+  });
+}
 
+function toggleGameMode(mode = null) {
+  if (mode == 0) {
+    gameMode = 0;
+  } else if (mode == 1) {
+    gameMode = 1;
+  } else {
+    if (gameMode == 0) {
+      gameMode = 1;
+    } else if (gameMode == 1) {
+      gameMode = 0;
+    }
+  }
   init();
 }
 
@@ -67,8 +87,6 @@ function preload() {
 }
 
 // Hämtar tidigare highscores ur localstorage och parsar JSONen till en array,
-// kör sedan metoden displayHighscoreList med arrayen som parameter för att skriva ut
-// highscoresen som fanns i localStorage
 function fetchHighscoreFromLocalStorage() {
   if (localStorage.getItem("highscores")) {
     highscores = JSON.parse(localStorage.getItem("highscores"));
@@ -92,13 +110,36 @@ function timer() {
 
 function handleGameOver() {
   controlsLocked = true;
+
   var gameOverScreen = document.getElementById("gameOverScreen");
   var gameOverScore = document.getElementById("gameOverScore");
   document.getElementById("highscoreEntry").reset();
   document.getElementById("submitHighScore").disabled = false;
   document.getElementById("initials").disabled = false;
+  screenFade.style.display = "block";
   gameOverScreen.style.display = "block";
   gameOverScore.innerHTML = score;
+}
+
+function openStartMenu(){
+  controlsLocked = true;
+
+  var settingsScreen = document.getElementById("startScreen");
+  screenFade.style.display = "block";
+  settingsScreen.style.display = "block";
+}
+
+function closeStartMenu() {
+  controlsLocked = false;
+
+  document.getElementById("startScreen").style.display="none";
+  screenFade.style.display="none";
+}
+
+function clearHighscores() {
+  window.localStorage.clear();
+  highscores = [];
+  displayHighscoreList(highscores, gameMode);
 }
 
 function addToHighScore() {
@@ -108,10 +149,13 @@ function addToHighScore() {
     name: initials,
     pts: score
   };
+
   highscores.push(gameResult);
-  highscores.sort(function (a, b) {
+
+  highscores.sort(function(a, b) {
     return b.pts - a.pts;
   });
+
   if (highscores.length > 20) {
     highscores.length = 20;
   }
@@ -141,7 +185,7 @@ function displayHighscoreList(arr, gameMode) {
 
   // sedan skriver vi ut vår array med highscores som li-element i listan
   // för att få allting sorterat och utan dubletter.
-  HighScoresToDisplay.forEach(function (item) {
+  HighScoresToDisplay.forEach(function(item) {
     if (Array.isArray(item)) {
       return;
     }
@@ -252,7 +296,7 @@ function shuffleImage() {
     currentImg = images[Math.floor(Math.random() * images.length)];
   } while (prevImg.src == currentImg.src);
   prevImg = currentImg;
-  currentImg.onload = function () {
+  currentImg.onload = function() {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
     spotX = getRandomInt(75, currentImg.width - 75);
