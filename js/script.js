@@ -20,7 +20,7 @@ var spotY;
 var currentImg;
 var prevImg = 0;
 
-var timeLimit = 30;
+var timeLimit;
 var timeLeft;
 var timeHandler;
 var movesMade;
@@ -36,11 +36,12 @@ var images = [];
 
 var gameMode = 0;
 
-function init(gamemode) {
+function init(gamemode = gameMode) {
   startScreen.style.display = "none";
   screenFade.style.display ="none";
   controlsLocked = true;
-  timeHandler = setInterval(timer, 1000);
+  timeLimit = 30;
+  startTimer(timeLimit);
   gameMode = gamemode;
   console.log("gamemode: " + gameMode);
   fetchHighscoreFromLocalStorage();
@@ -64,17 +65,11 @@ for(var i = 0; i < menuLinks.length; i++) {
   });
 }
 
-function toggleGameMode(mode = null) {
+function toggleGameMode(mode) {
   if (mode == 0) {
     gameMode = 0;
   } else if (mode == 1) {
     gameMode = 1;
-  } else {
-    if (gameMode == 0) {
-      gameMode = 1;
-    } else if (gameMode == 1) {
-      gameMode = 0;
-    }
   }
   init();
 }
@@ -106,6 +101,12 @@ function timer() {
     countdown.innerHTML = timeLeft + " sekunder kvar";
     timeLeft--;
   }
+}
+
+function startTimer(seconds) {
+  timeLeft = seconds;
+  clearInterval(timeHandler);
+  timeHandler = setInterval(timer, 1000);
 }
 
 function handleGameOver() {
@@ -145,7 +146,7 @@ function clearHighscores() {
 function addToHighScore() {
   var initials = document.getElementById("initials").value;
   gameResult = {
-    gameMode: gameMode,
+    mode: gameMode,
     name: initials,
     pts: score
   };
@@ -175,7 +176,7 @@ function displayHighscoreList(arr, gameMode) {
   // Filtrerar vår highscore-lista så att bara dom scores som gäller det aktuella game modet visas.
   // (När man spelar puzzle mode så ska inte high scores för chase mode visas, och vice versa)
   var HighScoresToDisplay = arr.filter(val => {
-    return val.gameMode == gameMode;
+    return val.mode == gameMode;
   });
 
   //Först tar vi bort alla li-element som finns i listan
@@ -208,11 +209,7 @@ function displayHighscoreList(arr, gameMode) {
     timeLimit + " sekunder kvar";
 } */
 
-function resetTimer(seconds) {
-  timeLeft = seconds;
-  clearInterval(timeHandler);
-  timeHandler = setInterval(timer, 1000);
-}
+
 
 function serveNewImage() {
   controlsLocked = true;
@@ -235,18 +232,19 @@ function serveNewImage() {
   /*   document.fonts.ready.then(_ => {
     setTimeout(_ => markTheSpot(spotX, spotY), 500)
   }); */
-  markTheSpot(spotX, spotY);
+  
+  markTheSpot(spotX, spotY);  
   shuffleImage();
 
   movesMade = 0;
   if (gameMode == 0) {
     timeLimit = 30;
-    resetTimer(timeLimit);
+    startTimer(timeLimit);
   } else if (gameMode == 1) {
     if (timeLimit <= 5) {
       handleGameOver();
     } else {
-      resetTimer(timeLimit);
+      startTimer(timeLimit);
       timeLimit = timeLimit - 5;
     }
   }
@@ -310,16 +308,13 @@ function shuffleImage() {
     ctx.fill();
     ctx.restore();
     movesMade = 0;
-    document.getElementById("movesCounter").innerHTML =
-      "Antal drag: " + movesMade;
     checkIfCrownFound();
     controlsLocked = false;
-  };
+  }; 
 }
 
 function moveImage(spotX, spotY) {
   movesMade++;
-  var movesCounter = document.getElementById("movesCounter");
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save();
   ctx.drawImage(currentImg, x - imgX, y - imgY);
@@ -331,7 +326,6 @@ function moveImage(spotX, spotY) {
   ctx.fill();
   ctx.restore();
   checkIfCrownFound();
-  movesCounter.innerHTML = "Antal drag: " + movesMade;
 }
 
 function controller(e) {
@@ -390,8 +384,6 @@ function controller(e) {
       case " ":
         if (checkIfCrownFound()) {
           score++;
-          document.getElementById("movesCounter").innerHTML =
-            "Du hittade den! Det tog " + movesMade + " drag";
           document.getElementById("scoreCounter").innerHTML = "Score: " + score;
           serveNewImage();
         } else {

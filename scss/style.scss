@@ -257,8 +257,8 @@ p {
         display: block;
         position: absolute;
         width: 60em;
-        height: 40em;
-        top: 20%;
+        height: 55em;
+        top: 10%;
         left: 50%;
         margin: -5em 0 0 -30em;
         z-index: 3;
@@ -318,7 +318,7 @@ p {
                 color: $royalYellow;
                 text-transform: uppercase;
                 font-size: 2em;
-                padding: 1em .5em;
+                padding: .7em 0;
                 transition: all .1s ease-out;
                 cursor: pointer;
 
@@ -326,6 +326,12 @@ p {
                     transform: scale(1.02);
                 }
             }
+        }
+
+        & .logo {
+            margin: 0 auto;
+            padding: 1em 0;
+            width: 20em;
         }
 
 }

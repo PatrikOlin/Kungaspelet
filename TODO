@@ -2,7 +2,7 @@
 Kungaspelet:
   ☐ Lös hur du ska göra med uppdelningen av highscorelistor och olika game modes
   ☐ Skapa en startmeny med logotyp, instruktioner och rensa highscore-funktion.
-  ☐ Bygg ett bättre system för menyer och popups
+  ✔ Bygg ett bättre system för menyer och popups @done(18-07-18 21:54)
   ☐ Ta en titt på varför spawnadet av kronan buggar och vad som kan göras för att lösa det.
   ☐ Städa upp JS-funktionen som sätter active-klassen i menyn. Flytta ut den till en riktig funktion, om inget annat.
-  ☐ Dela upp init-funktionen i en tydlig init och en newGame
+  ☐ Dela upp init-funktionen i en tydlig init och en newGame?
