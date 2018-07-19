@@ -36,6 +36,9 @@ var images = [];
 
 var gameMode = 0;
 
+var audio = new Audio("assets/sounds/thinkmusic.mp3");
+audio.loop = true;  
+
 function init(gamemode = gameMode) {
   startScreen.style.display = "none";
   screenFade.style.display ="none";
@@ -55,6 +58,7 @@ function init(gamemode = gameMode) {
   document.getElementById("scoreCounter").innerHTML = "Poäng: " + score;
   serveNewImage();
   screenFade.style.display = "none";
+  audio.play();
 }
 
 for(var i = 0; i < menuLinks.length; i++) {
@@ -96,6 +100,8 @@ function timer() {
   if (timeLeft == 0) {
     clearInterval(timeHandler);
     countdown.innerHTML = "Slut på tid!";
+    audio.pause();
+    audio.currentTime = 0.0;
     handleGameOver();
   } else {
     countdown.innerHTML = timeLeft + " sekunder kvar";
@@ -111,6 +117,9 @@ function startTimer(seconds) {
 
 function handleGameOver() {
   controlsLocked = true;
+
+  audio.pause();
+  audio.currentTime = 0.0;
 
   var gameOverScreen = document.getElementById("gameOverScreen");
   var gameOverScore = document.getElementById("gameOverScore");
@@ -128,6 +137,10 @@ function openStartMenu(){
   var settingsScreen = document.getElementById("startScreen");
   screenFade.style.display = "block";
   settingsScreen.style.display = "block";
+
+  audio.pause();
+  audio.currentTime = 0.0;
+  handleGameOver();
 }
 
 function closeStartMenu() {
