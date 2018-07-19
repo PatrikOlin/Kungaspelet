@@ -1,14 +1,14 @@
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
 @font-face {
   font-family: 'sweden_sansregular';
-  src: url("/assets/fonts/swedensans-webfont.woff2") format("woff2"), url("/assets/fonts/swedensans-webfont.woff") format("woff");
+  src: url("../assets/fonts/swedensans-webfont.woff2") format("woff2"), url("../assets/fonts/swedensans-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'sweden_sansbold';
-  src: url("../assets/fonts/swedensansbold-webfont.woff2") format("woff2"), url("/../assets/fonts/swedensansbold-webfont.woff") format("woff");
+  src: url("../assets/fonts/swedensansbold-webfont.woff2") format("woff2"), url("../assets/fonts/swedensansbold-webfont.woff") format("woff");
   font-weight: normal;
   font-style: normal;
 }
