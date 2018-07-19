@@ -342,7 +342,7 @@ function moveImage(spotX, spotY) {
 }
 
 function controller(e) {
-  const key = event.key || e.target.id;
+  const key = e.key || e.target.id;
   console.log(key);
 
   if (!controlsLocked) {
