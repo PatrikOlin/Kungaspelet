@@ -1,16 +1,16 @@
 @import url("https://use.fontawesome.com/releases/v5.0.9/css/all.css");
 @font-face {
   font-family: 'sweden_sansregular';
-  src: url("../Kungaspelet/assets/fonts/swedensans-webfont.eot");
-  src: url("../Kungaspelet/assets/fonts/swedensans-webfont.eot?#iefix") format("embedded-opentype"), url("../Kungaspelet/assets/fonts/swedensans-webfont.woff2") format("woff2"), url("../Kungaspelet/assets/fonts/swedensans-webfont.woff") format("woff"), url("../Kungaspelet/assets/fonts/swedensans-webfont.ttf") format("truetype"), url("../Kungaspelet/assets/fonts/swedensans-webfont.svg#sweden_sansregular") format("svg");
+  src: url("Kungaspelet/assets/fonts/swedensans-webfont.eot");
+  src: url("Kungaspelet/assets/fonts/swedensans-webfont.eot?#iefix") format("embedded-opentype"), url("Kungaspelet/assets/fonts/swedensans-webfont.woff2") format("woff2"), url("Kungaspelet/assets/fonts/swedensans-webfont.woff") format("woff"), url("Kungaspelet/assets/fonts/swedensans-webfont.ttf") format("truetype"), url("Kungaspelet/assets/fonts/swedensans-webfont.svg#sweden_sansregular") format("svg");
   font-weight: normal;
   font-style: normal;
 }
 
 @font-face {
   font-family: 'sweden_sansbold';
-  src: url("../Kungaspelet/assets/fonts/swedensans-webfont.eot");
-  src: url("../Kungaspelet/assets/fonts/swedensansbold-webfont.eot?#iefix") format("embedded-opentype"), url("../Kungaspelet/assets/fonts/swedensansbold-webfont.woff2") format("woff2"), url("../Kungaspelet/assets/fonts/swedensansbold-webfont.woff") format("woff"), url("../Kungaspelet/assets/fonts/swedensansbold-webfont.ttf") format("truetype"), url("../Kungaspelet/assets/fonts/swedensansbold-webfont.svg#sweden_sansbold") format("svg");
+  src: url("Kungaspelet/assets/fonts/swedensans-webfont.eot");
+  src: url("Kungaspelet/assets/fonts/swedensansbold-webfont.eot?#iefix") format("embedded-opentype"), url("Kungaspelet/assets/fonts/swedensansbold-webfont.woff2") format("woff2"), url("Kungaspelet/assets/fonts/swedensansbold-webfont.woff") format("woff"), url("Kungaspelet/assets/fonts/swedensansbold-webfont.ttf") format("truetype"), url("Kungaspelet/assets/fonts/swedensansbold-webfont.svg#sweden_sansbold") format("svg");
   font-weight: normal;
   font-style: normal;
 }
