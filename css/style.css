@@ -37,6 +37,7 @@ ul {
 
 .container {
   width: 100%;
+  max-width: 800px;
   margin: 0 auto;
 }
 
@@ -63,7 +64,7 @@ h1 {
   color: #FECB00;
   margin: 0 auto;
   text-align: center;
-  font-size: 4em;
+  font-size: 3em;
   text-transform: uppercase;
   letter-spacing: 3px;
   padding-top: 50px;
@@ -259,16 +260,16 @@ p {
 #startScreen {
   display: block;
   position: absolute;
-  width: 60em;
-  height: 55em;
+  width: 35em;
+  height: 45em;
   top: 10%;
   left: 50%;
-  margin: -5em 0 0 -30em;
+  margin: -5em 0 0 -17.5em;
   z-index: 3;
   text-align: center;
   background-color: #005293;
   color: #FECB00;
-  border: 15px solid #FECB00;
+  border: 10px solid #FECB00;
   -webkit-transition: all .2s ease-out;
   transition: all .2s ease-out;
 }
@@ -278,6 +279,7 @@ p {
 #startScreen span,
 #startScreen label {
   color: #FECB00;
+  margin: auto;
 }
 
 #startScreen h1 {
@@ -320,6 +322,8 @@ p {
 
 #startScreen .start-menu-list {
   list-style: none;
+  margin-block-start: 0;
+  padding-inline-start: 0;
 }
 
 #startScreen .start-menu-list li {
