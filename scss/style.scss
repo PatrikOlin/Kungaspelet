@@ -195,11 +195,11 @@ p {
 #gameOverScreen {
     display: none;
     position: absolute;
-    width: 60em;
+    width: 40em;
     height: 20em;
     top: 50%;
     left: 50%;
-    margin: -10em 0 0 -30em;
+    margin: -10em 0 0 -20em;
     z-index: 3;
     text-align: center;
     background-color: $royalBlue;
@@ -254,11 +254,11 @@ p {
     #startScreen {
         display: block;
         position: absolute;
-        width: 60em;
-        height: 55em;
+        width: 35em;
+        height: 45em;
         top: 10%;
         left: 50%;
-        margin: -5em 0 0 -30em;
+        margin: -5em 0 0 -17.5em;
         z-index: 3;
         text-align: center;
         background-color: $royalBlue;
