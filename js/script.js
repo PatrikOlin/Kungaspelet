@@ -3,8 +3,8 @@
 var canvas = document.getElementById("canvas");
 var ctx = canvas.getContext("2d");
 var screenFade = document.getElementById("screenFade");
-var menu = document.getElementById("main-nav");
-var menuLinks = menu.getElementsByClassName("menu-link");
+/* var menu = document.getElementById("main-nav");
+var menuLinks = menu.getElementsByClassName("menu-link"); */
 var startScreen = document.getElementById("startScreen");
 
 var x;
@@ -47,9 +47,9 @@ function init(gamemode = gameMode) {
   startTimer(timeLimit);
   gameMode = gamemode;
   console.log("gamemode: " + gameMode);
-  fetchHighscoreFromLocalStorage();
+/*   fetchHighscoreFromLocalStorage();
   console.log("retrieved Highscores: ", highscores);
-  displayHighscoreList(highscores, gameMode);
+  displayHighscoreList(highscores, gameMode); */
   document.getElementById("gameOverScreen").style.display = "none";
   window.addEventListener("resize", resizeCanvas, false);
   window.addEventListener("orientationchange", resizeCanvas, false);
@@ -61,13 +61,13 @@ function init(gamemode = gameMode) {
   audio.play();
 }
 
-for(var i = 0; i < menuLinks.length; i++) {
+/* for(var i = 0; i < menuLinks.length; i++) {
   menuLinks[i].addEventListener("click", function() {
     var current = document.getElementsByClassName("active");
     current[0].className = current[0].className.replace(" active", "");
     this.className += " active";
   });
-}
+} */
 
 function toggleGameMode(mode) {
   if (mode == 0) {
@@ -86,13 +86,13 @@ function preload() {
 }
 
 // Hämtar tidigare highscores ur localstorage och parsar JSONen till en array,
-function fetchHighscoreFromLocalStorage() {
+/* function fetchHighscoreFromLocalStorage() {
   if (localStorage.getItem("highscores")) {
     highscores = JSON.parse(localStorage.getItem("highscores"));
   } else {
     highscores = [];
   }
-}
+} */
 
 function timer() {
   var countdown = document.getElementById("countdownTimer");
@@ -150,7 +150,7 @@ function closeStartMenu() {
   screenFade.style.display="none";
 }
 
-function clearHighscores() {
+/* function clearHighscores() {
   window.localStorage.clear();
   highscores = [];
   displayHighscoreList(highscores, gameMode);
@@ -209,7 +209,7 @@ function displayHighscoreList(arr, gameMode) {
     );
     scoreList.appendChild(li);
   });
-}
+} */
 
 /* function addTime(seconds) {
   if (timeLimit == 0) {
