@@ -133,7 +133,7 @@ function handleGameOver() {
 }
 
 function sendScore() {
-  window.parent.postMessage(score);
+  window.parent.postMessage(score, "*");
 }
 
 function openStartMenu(){
