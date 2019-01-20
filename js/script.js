@@ -123,9 +123,9 @@ function handleGameOver() {
 
   var gameOverScreen = document.getElementById("gameOverScreen");
   var gameOverScore = document.getElementById("gameOverScore");
-  document.getElementById("highscoreEntry").reset();
-  document.getElementById("submitHighScore").disabled = false;
-  document.getElementById("initials").disabled = false;
+/*   document.getElementById("highscoreEntry").reset(); */
+/*   document.getElementById("submitHighScore").disabled = false;
+  document.getElementById("initials").disabled = false; */
   screenFade.style.display = "block";
   gameOverScreen.style.display = "block";
   gameOverScore.innerHTML = score;
@@ -310,7 +310,7 @@ function shuffleImage() {
   currentImg.onload = function() {
     imgX = currentImg.width / 2;
     imgY = currentImg.height / 2;
-    spotX = getRandomInt(75, currentImg.width - 75);
+    spotX = getRandomInt(10, currentImg.width - 10);
     spotY = getRandomInt(50, currentImg.height - 50);
     ctx.save();
     ctx.drawImage(currentImg, x - imgX, y - imgY);
@@ -343,7 +343,6 @@ function moveImage(spotX, spotY) {
 
 function controller(e) {
   const key = e.key || e.target.id;
-  console.log(key);
 
   if (!controlsLocked) {
     switch (key) {
@@ -372,7 +371,7 @@ function controller(e) {
 
       case "ArrowLeft":
       case "a":
-        if (x >= currentImg.width - 35) {
+        if (x >= currentImg.width / 2 + 200) {
           break;
         } else {
           x = x + 5;
@@ -384,7 +383,7 @@ function controller(e) {
 
       case "ArrowRight":
       case "d":
-        if (x <= 165) {
+        if (x <= -150) {
           break;
         } else {
           x = x - 5;
