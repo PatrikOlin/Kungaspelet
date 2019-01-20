@@ -129,6 +129,11 @@ function handleGameOver() {
   screenFade.style.display = "block";
   gameOverScreen.style.display = "block";
   gameOverScore.innerHTML = score;
+  sendScore();
+}
+
+function sendScore() {
+  window.parent.postMessage(score);
 }
 
 function openStartMenu(){
@@ -360,7 +365,7 @@ function controller(e) {
 
       case "ArrowDown":
       case "s":
-        if (y <= 105) {
+        if (y <= 75) {
           y = y;
         } else {
           y = y - 5;
